@@ -45,6 +45,7 @@ const mensagensDeErro = {
         valueMissing: 'O campo de CEP não pode estar vazio.',
         patternMismatch: 'O CEP digitado não é válido.'
     }
+    
 
 }
 
