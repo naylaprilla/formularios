@@ -40,6 +40,10 @@ const mensagensDeErro = {
     cpf: {
         valueMissing: 'O campo de CPF não pode estar vazio.',
         customError: 'O CPF digitado não é válido.'
+    },
+    cep: {
+        valueMissing: 'O campo de CEP não pode estar vazio.',
+        patternMismatch: 'O CEP digitado não é válido.'
     }
 
 }
@@ -90,7 +94,8 @@ function validaCPF(input) {
     const cpfFormatado = input.value.replace(/\D/g, '')
     let mensagem = ''
 
-    if(!checaCPFRepetido(cpfFormatado)) {
+     // essa condição só acontece se o retorno da função for falsa, por isso começa com !
+    if(!checaCPFRepetido(cpfFormatado) || !checaEstruturaCPF(cpfFormatado)) {       
         mensagem = 'O CPF digitado não é válido.'
     }
     
@@ -123,5 +128,33 @@ function checaCPFRepetido(cpf) {
     return cpfValido
 }
 
-let soma = 
+function checaEstruturaCPF(cpf) {
+    const multiplicador = 10
+    return checaDigitoVerificador(cpf, multiplicador)
+} 
+
+function checaDigitoVerificador(cpf, multiplicador) {
+    if(multiplicador >= 12) {
+        return true
+    }
+
+    let multiplicadorInicial = multiplicador
+    let soma = 0
+    const cpfSemDigitos = cpf.substr(0, multiplicador - 1).split('')
+    const digitoVerificador = cpf.charAt(multiplicador - 1)
+    for(let contador = 0; multiplicadorInicial > 1; multiplicadorInicial --) {
+        soma = soma + cpfSemDigitos[contador] * multiplicadorInicial
+        contador ++
+    }
+
+    if(digitoVerificador == confirmaDigito(soma)) {
+        return checaDigitoVerificador(cpf, multiplicador + 1)
+    }
+
+    return false
+}
+
+function confirmaDigito(soma) {
+    return 11 - (soma % 11)
+}
 
