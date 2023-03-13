@@ -202,7 +202,7 @@ function recuperarCEP(input) {
     }
 }
 
-function preencheCamposComCEP(data) {
+function preencheCamposComCEP(data) { //preenche os campos do formulário
     const logradouro = document.querySelector('[data-tipo="logradouro"]')
     const cidade = document.querySelector('[data-tipo="cidade"]')
     const estado = document.querySelector('[data-tipo="estado"]')
