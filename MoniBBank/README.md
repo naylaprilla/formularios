@@ -49,7 +49,7 @@ Criamos a const dataNascimento = new Date(campo.value) que pega as informações
 E importamos esse arquivo em script.js além de adicionar o if de aniversário na função verificaCampo.
 Por fim, fazemos as comparações  na função validaIdade, colocaos um console.log(validaIdade(dataNascimento)) em ehMaiorDeIdade e verificamos a data retorna true ou false no console do navegador.
 
-## Validity State
+## Validity State e Tratando erros
 
 No arquivo script.js na função verificaCampo colocamos um console.log(campo.validity) 
 
@@ -58,6 +58,36 @@ Em script.js dentro do camposDoFormulario.forEach vamos adicionar um event liste
 
 Em script.js vamos criar uma variável const para guardar um array com os tipos de erros
 E outra const com uma lista de objetos, para guardar as mensagens de erros.
+
+tiposDeErro.forEach(erro => { //o forEach executa uma função para cada erro da lista
+        if(campo.validity[erro]) { // nesta parte ele verifica dentro do validity para ver se algum campo está como true
+            mensagem = mensagens[campo.name][erro]; // se algum campo estiver true então ele pega a lista de mensagens e verifica o nome do campo então atribui a mensagem específica para esse erro. 
+            console.log(mensagem);
+        }
+    })
+
+Mas por enquanto só estamos vendo esse erro no console. Agora vamos fazer aparecer na tela.
+
+        const mensagemErro = campo.parentNode.querySelector(".mensagem-erro"); 
+
+/* Aqui criamos um seletor que pega só a tag span que está no html na pasta pages abrir-conta-form.html dessa forma <span class="mensagem-erro"></span>*/
+    const validadorDeInput = campo.checkValidity(); // Aqui estamos checando se o campo está válido ou não.
+
+    if(!validadorDeInput){
+        mensagemErro.textContent = mensagem; 
+    }else {
+        mensagemErro.textContent = "";
+    }
+
+
+Em valida-cpf trocamos o console.log por campo.setCustomValidity("Esse cpf não é valido.")
+
+campo.setCustomValidity("") //Essa linha serve para resetar a mensagem de erro depois que a informação é corrigida.
+
+PERGUNTA: Visando criar validações customizadas para o campo de CPF e de data de nascimento, tivemos que recorrer ao tipo de erro customError. Para conseguir imprimir a mensagem específica dessas validações que foram desenvolvidas manualmente foi necessário alterar o valor do customError dentro do Validity State.
+Seguindo o padrão desse projeto, como poderíamos alterar o valor de customError em uma possível validação de CNPJ?
+RESPOSTA: campoDoCNPJ.setCustomValidity('Esse CNPJ não é válido');
+Com o método setCustomValidity é possível alterar o valor de customError. Com isso, a mensagem do erro específica de acordo com o valor da propriedade do erro dentro do validityState irá aparecer pois o valor de customError não será mais false.
 
 
 
