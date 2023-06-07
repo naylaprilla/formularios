@@ -56,7 +56,8 @@ No arquivo script.js na função verificaCampo colocamos um console.log(campo.va
 Clicamos no campo "Data de nascimento" e depois fora dele. Neste momento o Console retorna uma lista chamada ValidityState que exibe possíveis erros de validação que ocorrem automaticamente quando interagimos com esse formulário. Neste caso todos os elementos estão retornando false, menos o valueMissing, já que deixamos o campo sem nenhum valor preenchido.
 Em script.js dentro do camposDoFormulario.forEach vamos adicionar um event listener para invalid
 
-
+Em script.js vamos criar uma variável const para guardar um array com os tipos de erros
+E outra const com uma lista de objetos, para guardar as mensagens de erros.
 
 
 
