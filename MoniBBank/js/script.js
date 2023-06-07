@@ -14,6 +14,8 @@ formulario.addEventListener('submit', (e) => {
     }
 
     localStorage.setItem("cadastro", JSON.stringify(listaRespostas));
+
+    window.location.href = "./abrir-conta-form-2.html";
 })
 
 camposDoFormulario.forEach((campo) => {

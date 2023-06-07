@@ -90,6 +90,31 @@ RESPOSTA: campoDoCNPJ.setCustomValidity('Esse CNPJ não é válido');
 Com o método setCustomValidity é possível alterar o valor de customError. Com isso, a mensagem do erro específica de acordo com o valor da propriedade do erro dentro do validityState irá aparecer pois o valor de customError não será mais false.
 
 
+## Recebendo os Dados do Formulário
+
+const formulario = document.querySelector("[data-formulario]") // selecionamos o formulario através do data atributes
+
+formulario.addEventListener('submit', (e) => { // Estamos escutando quando o evento de submit ou quando o formulário é enviado.
+    e.preventDefault(); // esse e é de evento, ou event, aqui estamos tirando o padrão de reload da página
+    const listaRespostas = {
+        "nome": e.target.elements["nome"].value, // pega o alvo do evento, o elemento dele e o valor
+        "email": e.target.elements["email"].value,
+        "rg": e.target.elements["rg"].value,
+        "cpf": e.target.elements["cpf"].value,
+        "aniversario": e.target.elements["aniversario"].value,
+    }
+
+    localStorage.setItem("cadastro", JSON.stringify(listaRespostas)); 
+    // aqui selecionamos o localStorage que é o armazenamento local, inserimos um item dentro desse armazenamento local, que tinha a chave cadastro que é o primeiro parâmetro e o segundo mandamos os itens da lista, onde usamos o JSON.stringify para converter esses objetos em json para salvar essas informações.
+
+    window.location.href = "./abrir-conta-form-2.html"; // aqui criamos um direcionamento para a ultima parte do formulário.
+})
+
+Agora vamos testar se as informações estão mesmo chegando:
+  Na pagina do formulário no navegador selecione inspecionar/  >> aplicattion/ Local Storage clique no endereço url
+  Agora será possível ver a Key e Value, e se clicarmos em cima da value aparecem as informações.
+
+
 
 
 
