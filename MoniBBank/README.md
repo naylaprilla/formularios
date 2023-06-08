@@ -79,6 +79,16 @@ Mas por enquanto só estamos vendo esse erro no console. Agora vamos fazer apare
         mensagemErro.textContent = "";
     }
 
+Nessa parte tive problemas porque as mensagens não estavam aparecendo corretamente. Descobri uma reposta que funcionou no forum da Alura: Que era para adicionar um console.log que não estava no código da aula. Depois que eu corrigi isso todas as mensagens de erro comaçaram a aparecer.
+
+  tiposDeErro.forEach(erro => {
+        if(campo.validity[erro]) {
+            console.log(campo.name) // Esse console aqui
+            mensagem = mensagens[campo.name][erro];
+            console.log(mensagem);
+        }
+    })
+
 
 Em valida-cpf trocamos o console.log por campo.setCustomValidity("Esse cpf não é valido.")
 
@@ -113,6 +123,81 @@ formulario.addEventListener('submit', (e) => { // Estamos escutando quando o eve
 Agora vamos testar se as informações estão mesmo chegando:
   Na pagina do formulário no navegador selecione inspecionar/  >> aplicattion/ Local Storage clique no endereço url
   Agora será possível ver a Key e Value, e se clicarmos em cima da value aparecem as informações.
+
+Durante o projeto selecionamos elementos do HTML para pegar seus valores, para criar novas validações, para inserir textos, entre outros casos. Para conseguir realizar essas ações, estamos interagindo com o Document Object Model (DOM). Isso é algo que abordamos em vários projetos mas temos um curso em específico pra te ajudar nesse assunto: JavaScript: manipulando o DOM, não deixe de dar uma passadinha por lá.
+
+Para armazenamento dos dados do formulário foi utilizado o localStorage. O objeto localStorage permite salvar pares de chave/valor no navegador sem data de expiração, ou seja, os dados não são excluídos quando o navegador é fechado e ficam disponíveis para navegação futura. Você pode se aprofundar mais no assunto com o treinamento JavaScript na Web: armazenando dados no navegador do instrutor Pedro Marins e com o artigo "Armazenadores de dados do navegador" do Luan Alves.
+
+## Iniciar câmera
+
+Usamos essa parte do código no arquivo camera.js para inicializar a camera:
+
+        const botaoIniciarCamera = document.querySelector("[data-video-botao]");
+        const campoCamera = document.querySelector("[data-camera]");
+        const video = document.querySelector("[data-video]");
+
+        botaoIniciarCamera.addEventListener("click", async function() { // Essa função é assincrona porque é necessário esperar o usuario permitir o acesso à camera.
+        const inciarVideo = await navigator.mediaDevices // aqui solicitamos ao usuario o acesso à camera do dispositivo
+        .getUserMedia({video: true, audio:false});
+
+        botaoIniciarCamera.style.display = "none";
+        campoCamera.style.display = "block";
+
+        video.srcObject = inciarVideo;
+        })
+
+Para a camera funcionar criamos:
+
+const botaoTirarFoto = document.querySelector("[data-tirar-foto]");
+const canvas = document.querySelector("[data-video-canvas]");
+const mensagem = document.querySelector("[data-mensagem]");
+
+let imagemURL = "";
+
+botaoTirarFoto.addEventListener("click", function() {
+    canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height); 
+    //criamos um canvas, aí o JS desenhou uma imagem 2d(foto) com o mesmo tamanho do canva.
+
+    imagemURL = canvas.toDataURL("image/jpeg"); //pegamos a variavel e transformamos a imagem criada no canvas em uma url
+
+    campoCamera.style.toDataURL = "none"; tiramos o campo de Camera
+    mensagem.style.display = "block";
+
+})
+
+Vamos entender o código?
+botaoEnviarFoto.addEventListener("click", () => {
+    const receberDadosExistentes = localStorage.getItem("cadastro");
+    const converteRetorno = JSON.parse(receberDadosExistentes);
+
+    
+    converteRetorno.imagem = imagemURL;
+
+    localStorage.setItem("cadastro", JSON.stringify(converteRetorno));
+
+    window.location.href = "./abrir-conta-form-3.html";
+})
+
+ Este processo que configuramos permite que após o clique no botão seja retornado o item que possui a chave "cadastro" dentro de receberDadosExistentes. Convertemos esse retorno em objeto através do JSON.parse. Criamos em seguida o atributo imagem dentro da lista de dados que recebe a URL da foto tirada. Depois criamos um setItem para inserir a chave cadastro no localStorage que já havíamos criado, efetuando assim a atualização dos dados, que agora possuem uma imagem. Também convertemos os dados novamente para JSON através do JSON.stringify. Por fim, o window.location.href que inserimos possibilita o redirecionamento para a página de confirmação de cadastro.
+
+Considerações finais do Curso:
+
+Salvaremos nosso código e testaremos por meio do navegador. Clicaremos no quadro com o rosto sorridente e repetiremos o processo de tirar a fotografia. Se clicarmos no botão "Quero abrir minha conta!" seremos direcionados para a página de cadastro concluído.
+
+Terminamos de criar validações em todos os campos do formulário de criação de contas do MoniBank. Mas e agora? Para onde você deve seguir nessa jornada de estudos?
+
+Você pode aplicar algumas estilizações extras para melhorar a aparência da mensagem de erro. Por exemplo, foi aprendido a aplicar estilos CSS através do JavaScript, e com isso é possível trocar a cor da borda do campo com: campo.style.border = "2px solid red”.
+
+Ainda nesse projeto você pode fazer o deploy dele na plataforma que tiver mais familiaridade, como o Github Pages. Você pode descobrir como fazer isso com o artigo Como colocar seu projeto no ar com o Github Pages?.
+
+Também é possível ir além no armazenamento dessas informações do cadastro de conta, salvando esses dados em algum local externo ao invés do navegador. Para te ajudar com isso, você pode contar com o treinamento JavaScript: criando requisições, onde simulamos uma API através de um arquivo JSON, assim é possível salvar e consultar dados de um arquivo externo.
+
+E por fim, após se sentir confortável com o JavaScript, você vai se deparar com alguns diferentes caminhos: qual framework ou biblioteca seguir? A Alura também pode te ajudar nessa escolha com as seguintes formações:
+
+Vue.js 3
+Angular
+Svelte
+React com JavaScript
 
 
 
